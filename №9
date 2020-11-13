@@ -1,0 +1,60 @@
+#include <iostream>
+#include<fstream>
+using namespace std;
+
+void swap(int *pere, int i, int j)//меняем местами
+{
+	int bufer = pere[i];
+	pere[i] = pere[j];
+	pere[j] = bufer;
+}
+
+bool nextCombobj(int *pere, int N)
+{
+
+	int j = N - 2;
+	while (j != -1 && pere[j] >= pere[j + 1]) j--; //ищем пока следующий элемент больше предыдущего
+
+	if (j == -1) return false; // перестановок не осталось
+	int k = N - 1;
+
+	while (pere[j] >= pere[k]) k--; //ищем пока найдется элемент больше j
+	swap(pere, j, k); //меняем их местами
+
+	// сортируем элемента за j
+	int q = j + 1, p = N - 1; 
+	while (q<p) swap(pere, q++, p--);
+
+	return true;
+}
+
+int main()
+{
+	setlocale(LC_ALL, "RUSSIAN");
+	int n=10,N;
+	cout << "Введите длину слова : ";
+	cin >> N;
+	char *arr = new char[n] { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'j', 'k' };
+
+	ofstream A("out.txt");
+	int *pere = new int[N];
+
+	for (int i = 0; i < N; i++)
+		pere[i] = i;
+
+	for (int i = 0; i < N; i++){
+		cout << arr[pere[i]] << " ";
+	}
+	cout << endl;
+
+	while (nextCombobj(pere, N))
+	{
+		for (int i = 0; i < N; i++)
+			cout << arr[pere[i]] << " ";
+		cout << endl;
+	}
+	A.close();
+
+	system("pause");
+	return 0;
+}
