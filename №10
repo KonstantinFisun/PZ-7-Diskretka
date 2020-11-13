@@ -1,0 +1,66 @@
+#include <iostream>
+#include <fstream>
+
+using namespace std;
+
+void swap(int *raz, int i, int j)
+{
+	int bufer = raz[i];
+	raz[i] = raz[j];
+	raz[j] = bufer;
+}
+
+bool nextCombobj(int *raz, int n, int k)
+{
+	int j;
+	do  
+	{
+		j = n - 1;
+		while (j != -1 && raz[j] >= raz[j + 1]) j--; //ищем пока следующий элемент будет больше предыдущего
+
+		if (j == -1)
+			return false; //  размещений нет
+		int k = n - 1;
+
+
+		while (raz[j] >= raz[k]) k--; //ищем элемент больше j
+		swap(raz, j, k);
+
+		int q = j + 1, p = n - 1; // сортируем за j
+		while (q < p) swap(raz, q++, p--);
+
+	} while (j > k - 1); // повторяем пока не будет найдено следующее размещение
+
+	return true;
+}
+
+void main()
+{
+	setlocale(LC_ALL, "Russian");
+	int n, k;
+	cout << "Размещения из n = ";
+	cin >> n;
+	cout << "по k = ";
+	cin >> k;
+	char *arr = new char[10] { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'j', 'k' };
+
+	ofstream A("out.txt");
+	int *raz = new int[k];
+
+	for (int i = 0; i < n; i++)
+		raz[i] = i;
+
+	for (int i = 0; i < k; i++)
+		cout << arr[raz[i]] << " ";
+	cout << endl;
+
+	while (nextCombobj(raz, n, k))
+	{
+		for (int i = 0; i < k; i++)
+			cout << arr[raz[i]] << " ";
+		cout << endl;
+	}
+
+	A.close();
+	system("pause");
+}
