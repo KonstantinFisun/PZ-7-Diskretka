@@ -1,0 +1,60 @@
+#include <iostream>
+#include<fstream>
+using namespace std;
+bool NextCombobj(int *soc, int n, int k)
+{
+
+	for (int i = k - 1; i >= 0; --i)//начинаем идти с конца в начало
+	if (soc[i] < n - k + i + 1)
+	{
+		soc[i]++;//берем следующий элемент
+
+		for (int j = i + 1; j < k; j++)//следующий элемент меняем на предыдущий + 1
+			soc[j] = soc[j - 1] + 1;
+
+		return true;
+
+	}
+	return false;
+}
+
+void main()
+{
+	setlocale(LC_ALL, "Russian");
+	int n, k;
+	cout << "Размещения из n = ";
+	cin >> n;
+	n--;
+	cout << "по k = ";
+	cin >> k;
+
+	char *arr = new char[10] { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'j', 'k' };
+
+	ofstream A("out.txt");
+
+	int *soc = new int[k];
+
+	for (int i = 0; i < k; i++)
+		soc[i] = i;
+
+	for (int i = 0; i < k; i++)
+		cout << arr[soc[i]] << " ";
+	cout << endl;
+	int kol = 1;
+	if (n >= k)
+	{
+		while (NextCombobj(soc, n, k)){
+			for (int i = 0; i < k; i++)
+				cout << arr[soc[i]] << " ";
+			cout << endl;
+			kol++;
+		}
+	}
+	else cout << "Условие не выполняется" << endl;
+
+	cout << "Сочитания из " << n+1 << " по " << k << " построены! "<<kol << endl;
+
+	A.close();
+	system("pause");
+
+}
