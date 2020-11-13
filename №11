@@ -1,0 +1,55 @@
+using System;
+using System.IO;
+
+namespace Все_подмножества
+{
+    class Program
+    {
+
+	static void Decar(int dec,int N,char[] arr, StreamWriter fs)
+	{
+		string bit;
+		int kol=1;
+		fs.WriteLine("Пустое множество");
+
+            while (dec< Convert.ToInt32(Math.Pow(2, N+1))-1)
+            {
+				dec += 1;
+				bit = Convert.ToString(dec, 2);
+				fs.Write("{");
+				for (int i = 1; i < bit.Length; i++)
+                {
+                    if (bit[i] == '1')
+					fs.Write("{0}",arr[i-1]);
+					
+                }
+				fs.WriteLine("}");
+				kol++;
+			}
+			fs.WriteLine("Количество подмножеств - " + kol);
+
+
+	}
+
+	static void Main()
+	{
+		
+		int N;
+		Console.WriteLine("Введите длину исходного множества : ");
+		N = Convert.ToInt16(Console.ReadLine());
+		char[] arr = new char[10] { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'j', 'k' };
+
+		FileInfo output = new FileInfo(@"out.txt");
+		StreamWriter fs = output.CreateText();
+
+		int dec = Convert.ToInt32(Math.Pow(2, N));
+		Decar(dec,N,arr,fs);
+
+		fs.Close();
+
+		Console.WriteLine("Все подмножества записаны в файл");
+		Console.ReadKey();
+			
+	}
+	}
+}
