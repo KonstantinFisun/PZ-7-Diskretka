@@ -1,0 +1,56 @@
+#include <iostream>
+#include <fstream>
+using namespace std;
+bool NextSet(int *socP, int n, int k)
+{
+	int j = k - 1;//последний элемент
+	while (socP[j] == n && j >= 0) j--;//проверяем последний ли символ
+
+	if (j < 0) return false; //Сочитаний больше нет
+
+	socP[j]++;//увеличиваем элемент 
+
+	if (j == k - 1) return true; //если элемент последний то нашли
+	for (int i = j + 1; i < k; i++)//следующие за ним присваиваем такой же
+		socP[i] = socP[j];
+
+	return true;
+}
+
+void main()
+{
+	setlocale(LC_ALL, "Russian");
+	int n, k;
+	cout << "N = ";
+	cin >> n;
+	n--;
+	cout << "K = ";
+	cin >> k;
+
+	int raz;
+	if (k > n) raz = k;
+	else raz = n;
+	char *arr = new char[10] { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'j' };
+	int *socP = new int[raz];
+
+	ofstream A("out.txt");
+
+	for (int i = 0; i < raz; i++)
+		socP[i] = 0;
+
+	for (int i = 0; i < k; i++)
+		A << arr[socP[i]] << " ";
+	A << endl;
+
+	while (NextSet(socP, n, k)){
+		for (int i = 0; i < k; i++)
+			A << arr[socP[i]] << " ";
+		A << endl;
+	}
+
+	cout << "Сочитания c посвторениями из " << n+1 << " по " << k << " построены! " << endl;
+
+	A.close();
+
+	system("pause");
+}
